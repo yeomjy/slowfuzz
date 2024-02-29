@@ -37,6 +37,8 @@
 #endif
 #endif
 
+static const int DIGITS=7;
+
 namespace fuzzer {
 static const size_t kMaxUnitSizeToPrint = 256;
 
@@ -600,8 +602,9 @@ void Fuzzer::ExecuteCallback(const uint8_t *Data, size_t Size) {
 void Fuzzer::WriteToOutputCorpus(const Unit &U) {
   if (Options.OnlyASCII)
     assert(IsASCII(U));
-  if (Options.OutputCorpus.empty())
+  if (Options.OutputCorpus.empty()) {
     return;
+  }
   std::string Path = DirPlusFile(Options.OutputCorpus, Hash(U));
   WriteToFile(U, Path);
   if (Options.Verbosity >= 2)
@@ -609,9 +612,14 @@ void Fuzzer::WriteToOutputCorpus(const Unit &U) {
 }
 
 void Fuzzer::WriteUnitToFileWithPrefix(const Unit &U, const char *Prefix) {
-  if (!Options.SaveArtifacts)
+  if (!Options.SaveArtifacts) {
     return;
-  std::string Path = Options.ArtifactPrefix + Prefix + Hash(U);
+  }
+  std::string _index = std::to_string(TotalNumberOfRuns);
+  std::string debug_index_str = std::string(DIGITS - _index.length(), '0') + _index;
+  std::string edges_str = std::to_string(MaxCoverage.TotalEdges);
+
+  std::string Path = Options.ArtifactPrefix + Prefix + debug_index_str + "-" + edges_str + "-" + Hash(U);
   if (!Options.ExactArtifactPath.empty())
     Path = Options.ExactArtifactPath; // Overrides ArtifactPrefix.
   WriteToFile(U, Path);
@@ -795,7 +803,9 @@ void Fuzzer::MutateAndTestOne() {
                          /*MayDeleteFile=*/true);
       ReportNewCoverage(&II, {CurrentUnitData, CurrentUnitData + Size});
 
-      std::string s = Hash({CurrentUnitData, CurrentUnitData + Size});
+      std::string _index = std::to_string(TotalNumberOfRuns);
+      std::string debug_index_str = std::string(DIGITS - _index.length(), '0') + _index;
+      std::string s = debug_index_str + "-" + Hash({CurrentUnitData, CurrentUnitData + Size});
       std::string Path = Options.ArtifactPrefix + "before-mutation-" + s;
       WriteToFile({PreviousUnit, PreviousUnit + PreviousSize}, Path);
       int mut_idx = MD.GetLastMutationIdx();
