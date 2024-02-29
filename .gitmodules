@@ -1,0 +1,6 @@
+[submodule "apps/bzip2/bzip2"]
+	path = apps/bzip2/bzip2
+	url = https://gitlab.com/bzip2/bzip2.git
+[submodule "apps/bzip2/bzip2-tests"]
+	path = apps/bzip2/bzip2-tests
+	url = git://sourceware.org/git/bzip2-tests.git
