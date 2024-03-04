@@ -35,3 +35,7 @@ corpus/
 out/
 output/
 driver
+seed/
+compile_cmds/
+.idea/
+cmake-build-debug/
