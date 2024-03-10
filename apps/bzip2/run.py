@@ -50,8 +50,7 @@ ASAN_OPTIONS=halt_on_error=0:coverage=1:coverage_order_pcs=1:coverage_counters=1
 -runs=-1 -max_len=$(MAXLEN) -death_mode=3 -max_total_time=86400 \
     """
 
-    subprocess.run(["unzip", "bzip2_decompress_target_seed_corpus.zip",
-        "-d", corpus_dir])
+    subprocess.run(["unzip", "seed.zip", "-d", corpus_dir])
 
     cmds = [
             "./driver",
