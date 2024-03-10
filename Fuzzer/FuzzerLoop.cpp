@@ -37,7 +37,7 @@
 #endif
 #endif
 
-static const int DIGITS=7;
+static const int DIGITS=16;
 
 namespace fuzzer {
 static const size_t kMaxUnitSizeToPrint = 256;

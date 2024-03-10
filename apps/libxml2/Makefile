@@ -89,7 +89,8 @@ test: $(TARGET)
 	-dict=libxml2/fuzz/xml.dict \
 	-artifact_prefix=$(OUTPUT) -print_final_stats=1 \
 	-detect_leaks=0 -rss_limit_mb=10000 -shuffle=0 \
-	-runs=1000000 -max_len=$(MAXLEN) -death_mode=1
+	-runs=-1 -max_len=$(MAXLEN) -death_mode=3 -max_total_time=21600 \
+	-seed=42
 
 .PHONY: tools
 tools:
